@@ -1,0 +1,19 @@
+{
+  "name": "smetana",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.71.2",
+    "dotenv": "^17.2.3",
+    "googleapis": "^168.0.0",
+    "input": "^1.0.1",
+    "telegram": "^2.26.22"
+  }
+}
