@@ -1,4 +1,6 @@
 require("dotenv").config();
+const express = require("express");
+const cron = require("node-cron");
 const { TelegramClient } = require("telegram");
 const { StringSession } = require("telegram/sessions");
 const { Api } = require("telegram/tl");
@@ -6,6 +8,22 @@ const { Api } = require("telegram/tl");
 const API_ID = parseInt(process.env.API_ID);
 const API_HASH = process.env.API_HASH;
 const SESSION = new StringSession(process.env.TELEGRAM_SESSION);
+
+// Express app for health check
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
+app.get("/", (req, res) => {
+  res.status(200).json({
+    service: "Telegram Inspection Reporter",
+    status: "running",
+    nextRun: "Monday 8pm Bishkek time (UTC+6)"
+  });
+});
 
 const SOURCE_CHAT = -1001988053976;
 const SOURCE_TOPIC = 3;
@@ -102,7 +120,8 @@ function extractUnitType(text) {
   return units.length > 0 ? units.sort().join(", ") : "";
 }
 
-async function main() {
+async function runReport() {
+  console.log(`[${new Date().toISOString()}] Starting report generation...`);
   console.log("Connecting to Telegram...");
 
   const client = new TelegramClient(SESSION, API_ID, API_HASH, {
@@ -226,6 +245,29 @@ ${transferLines}`;
   console.log("Report sent!");
 
   await client.disconnect();
+  console.log(`[${new Date().toISOString()}] Report generation complete.`);
 }
 
-main().catch(console.error);
+// Schedule cron job: Monday 8pm Bishkek time (UTC+6 = 14:00 UTC)
+// Cron format: minute hour day-of-month month day-of-week
+// "0 14 * * 1" = At 14:00 UTC every Monday
+cron.schedule("0 14 * * 1", () => {
+  console.log("Cron triggered: Running weekly report...");
+  runReport().catch(err => {
+    console.error("Report generation failed:", err);
+  });
+}, {
+  timezone: "UTC"
+});
+
+// Start Express server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  console.log("Health check available at /health");
+  console.log("Cron scheduled: Every Monday at 8pm Bishkek time (14:00 UTC)");
+});
+
+// Also allow manual run via command line argument
+if (process.argv.includes("--run-now")) {
+  runReport().catch(console.error);
+}

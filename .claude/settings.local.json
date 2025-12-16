@@ -8,7 +8,8 @@
       "Bash(node uploadToSheets.js:*)",
       "Bash(node generateReport.js:*)",
       "Bash(node uploadReportToSheets.js:*)",
-      "Bash(node index.js:*)"
+      "Bash(node index.js:*)",
+      "Bash(curl:*)"
     ]
   }
 }
