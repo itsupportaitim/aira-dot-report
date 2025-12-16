@@ -31,7 +31,7 @@ const OUTPUT_CHAT = 7229426065;
 
 // Company list for matching
 const COMPANIES = [
-  "7 LUV Transporting inc", "Acarsan Inc", "AJ PARTNERS LLC", "AJS Express LLC",
+  "7 LUV Transporting inc", "AAJ COM LLC", "Acarsan Inc", "AJ PARTNERS LLC", "AJS Express LLC",
   "ALL STATE INC", "ALLIANSAS INC", "ALMA CARRIERS CORP", "Amana cargo", "AMG LINE LLC",
   "AMPM TRANSPORT INC", "ASIL FREIGHT LLC", "BALDAN TRANSPORT INC", "BARRE LOGISTICS LLC",
   "CASPIAN EXPRESS INC", "Chuiko Logistics Corporation", "CME TRUCKING LLC", "COLD AIRFLOW LLC",
